@@ -1,2 +1,3 @@
 # IT202-008
-This is for my IT202 class
+Class examples
+This is new learning about commiting
