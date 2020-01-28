@@ -12,7 +12,7 @@ $connection_string = "mysql:host=$dbhost;dbname=$dbdatabase;charset=utf8mb4";
 
 try {
     $db = new PDO($connection_string, $dbuser, $dbpass);
-    echo "Should have connected";
+    echo "POGGERS YOU MADE IT";
     $stmt = $db->prepare("CREATE TABLE `Test` (
                 `id` int auto_increment not null,
                 `username` varchar(30) not null unique,
@@ -24,7 +24,7 @@ try {
 }
 catch (Exception $e) {
     echo $e->getMessage();
-    exit("It didn't work");
+    exit("It did not work. PEPEHANDS");
 }
 
-?>You are not connected
+?>
