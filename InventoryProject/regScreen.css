@@ -1,0 +1,28 @@
+#Header {
+    text-align: center;
+    font-size: x-large;
+    font-family: monospace;
+    background-color: aquamarine;
+    width: 870px;
+    height: auto;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#form {
+    text-align: center;
+}
+
+
+/*
+* this is to contain the entering spaces
+*/
+
+#container {
+    background-color: rgb(102, 236, 243);
+    outline-color: black;
+    width: 900px;
+    height: auto;
+    margin-left: auto;
+    margin-right: auto;
+}

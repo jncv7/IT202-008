@@ -1,0 +1,16 @@
+#message {
+    text-align: center;
+    font-size: x-large;
+    font-family: monospace;
+    background-color: aquamarine;
+    width: 870px;
+    height: auto;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#loginStuff {
+    text-align: center;
+    background-color: bisque;
+    border: 0px;
+}
