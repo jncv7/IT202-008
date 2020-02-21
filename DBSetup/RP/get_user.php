@@ -1,4 +1,3 @@
-  
 <?php
 //this is check_db.php
 ini_set('display_errors', 1);
@@ -14,17 +13,16 @@ $connection_string = "mysql:host=$dbhost;dbname=$dbdatabase;charset=utf8mb4";
 try{
 	$db = new PDO($connection_string, $dbuser, $dbpass);
 	echo "Should have connected";
-	$stmt = $db->prepare("CREATE TABLE `Users2` (
-				`id` int auto_increment not null,
-				`email` varchar(100) not null unique,
-				`created` timestamp default current_timestamp,
-				`modified` timestamp default current_timestamp on update current_timestamp,
-				PRIMARY KEY (`id`)
-				) CHARACTER SET utf8 COLLATE utf8_general_ci"
-			);
-			
-	$stmt->execute();
-	echo var_export($stmt->errorInfo(), true);
+	
+
+	 $stmt = $db->prepare("SELECT * from `Users2` where id = :id");
+    
+        $params = array(":id"=> '1');
+        $stmt->execute($params);
+	$results = $stmt->fetch(PDO::FETCH_ASSOC);
+        echo "<pre>" . var_export(
+                        $stmt->errorInfo(), true) . "</pre>";
+	echo var_export($results, true);
 }
 catch(Exception $e){
 	echo $e->getMessage();

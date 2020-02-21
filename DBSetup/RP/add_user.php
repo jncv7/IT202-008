@@ -17,12 +17,12 @@ try{
  $db = new PDO($connection_string, $dbuser, $dbpass);
  echo "Should have connected";
 
-  $stmt = $db->prepare("INSERT INTO `USER`
-			(email, password) VALUES
-			(:email, :password)");
+  $stmt = $db->prepare("INSERT INTO `Users2`
+		  (email) VALUES
+		  (:email)");
   
-  $params = array(":email"=> 'yaholo@yolo.com', ":password" => 'test123');
-	$stmt->execute($params);
+  $params = array(":email"=> 'yaholo@yolo.com');
+  $stmt->execute($params);
  
  
 
