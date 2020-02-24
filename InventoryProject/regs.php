@@ -2,7 +2,6 @@
 <!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
 <!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
 <!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
     <head>
         <script src = "regsFunc.js"></script>
         <link rel= "stylesheet" type ="text/css" media = "screen" href="regScreen.css">
@@ -20,18 +19,33 @@
     <div id = "container">
             <div id = "form">
 
-            <form name="regform" id="MyForm" method="POST" onsubmit = "return checkpassword(this)">   
+            <form name="regform" id="MyForm" 
+                method="POST" 
+                onsubmit = "return isAllCorrect(this)">   
                     <label for="username">Username: </label>
                     <input type="username" id="username" name="username" placeholder="Enter Username"/>
+                   <!-- <span id ="user_error"></span> -->
+
                     <label for="pass">Password: </label>
                     <input type="password" id="pass" name="password" placeholder="Enter password"/>
+
+
                     <label for="conf">Confirm Password: </label>
                     <input type="password" id="conf" name="confirm" placeholder="Enter password"/>
+                    <span id = "password_error"></span>
+
                     <input type="submit" value="Register"/>
 
                 </form>
-            </div>
-    </div>    
+
+               <?php if (isset ($msg)):?>
+                    <span> <?php echo $msg ?> </span>
+               <?php endif?>
+
+
+                
+            </div> <!-- This is for form -->
+    </div>    <!-- This is for container -->
     </body>
 </html>
 
@@ -54,10 +68,12 @@ if
     $conf = $_POST['confirm'];
 
     if ($pass == $conf) {
-        echo "User is being registered!";
+        
+        $msg = "We are registering the user!";
 
     }else {
-        echo "Cannot register. Make sure everything is correct!";
+        // echo "Cannot register. Make sure everything is correct!";
+        $msg = "Cannot register the user. Double check your inputs.";
         exit();
     }   
 

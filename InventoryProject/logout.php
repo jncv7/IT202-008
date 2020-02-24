@@ -1,3 +1,45 @@
+<!DOCTYPE html>
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="LogOut Page" content="This page is to logout LLOL">
+    <title>Logout</title>
+    <!-- <link rel="stylesheet" href="logoutScreen.css"> -->
+
+
+    <style>
+        #message {
+            text-align: center;
+            color: white;
+            font-size: 42px;
+            
+
+        }
+    </style>
+</head>
+
+<body style="background-color: blue">
+    <div id="container">
+
+        <div id="message">
+        <p >
+            Thank you for playing this game!
+        </p>
+
+        </div>
+
+
+
+    </div>
+
+
+
+</body>
+
+</html>
+
+
 
 <?php
 
@@ -9,17 +51,22 @@ session_unset();
 
 session_destroy();
 
-echo "See you later!";
-echo var_export($_SESSION, true);
+// echo "See you later!";
+// echo var_export($_SESSION, true);
 
 //get session cookie and delete/clear it for this session
-if (ini_get("session.use_cookies")) { 
-    $params = session_get_cookie_params(); 
-	//clones then destroys since it makes it's lifetime 
-	//negative (in the past)
-    setcookie(session_name(), '', time() - 42000, 
-        $params["path"], $params["domain"], 
-        $params["secure"], $params["httponly"] 
-    ); 
-} 
+if (ini_get("session.use_cookies")) {
+    $params = session_get_cookie_params();
+    //clones then destroys since it makes it's lifetime 
+    //negative (in the past)
+    setcookie(
+        session_name(),
+        '',
+        time() - 42000,
+        $params["path"],
+        $params["domain"],
+        $params["secure"],
+        $params["httponly"]
+    );
+}
 ?>
