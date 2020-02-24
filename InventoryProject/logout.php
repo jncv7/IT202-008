@@ -13,8 +13,14 @@
             text-align: center;
             color: white;
             font-size: 42px;
-            
 
+
+        }
+
+        #notif {
+            text-align: center;
+            font-size: 20px;
+            color: lightblue;
         }
     </style>
 </head>
@@ -23,11 +29,20 @@
     <div id="container">
 
         <div id="message">
-        <p >
-            Thank you for playing this game!
-        </p>
+            <p>
+                Thank you for playing this game!
+            </p>
+        </div>
+
+        <div id="notif">
+            <p>
+                This page will redirect you in 10 seconds ...
+            </p>
 
         </div>
+
+
+
 
 
 
@@ -69,4 +84,11 @@ if (ini_get("session.use_cookies")) {
         $params["httponly"]
     );
 }
+
+
+
+// redirect the user to the login page
+// it will auto redirect after 10 seconds
+header('Refresh: 10, URL = https://web.njit.edu/~jcv7/it202008/InventoryProject/login.php');
+
 ?>
