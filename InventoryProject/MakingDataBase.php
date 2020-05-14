@@ -40,7 +40,7 @@ try {
         "INSERT INTO `ProjectsTable`
 			(username, pwrd) VALUES
             (:username, :pwrd)");
-    $params = array(":username"=> 'noble01', ":pwrd" => test123);
+    $params = array(":username"=> 'noble01', ":pwrd" => 'test123');
     $stmt->execute($params);
     
     echo "<br> This is using a Select Query <br>";

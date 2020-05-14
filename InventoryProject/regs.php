@@ -1,3 +1,97 @@
+<?php
+// SERVER SIDE STUFF
+ini_set('display_errors',1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
+
+
+// check if all the things by 'name' are filled
+if 
+(
+    isset ($_POST['username']) &&
+    isset ($_POST['password']) &&
+    isset ($_POST['confirm'])
+) {
+    // get the passwords and make sure they are the same
+
+    $pass = $_POST['password'];
+    $conf = $_POST['confirm'];
+
+    if ($pass == $conf) {
+        
+        $msg = "We are registering the user!";
+
+    }else {
+        // echo "Cannot register. Make sure everything is correct!";
+        $msg = "Cannot register the user. Double check your inputs.";
+        exit();
+    }   
+
+    // now hash the password
+    $pass = password_hash ($pass, PASSWORD_BCRYPT);
+   // echo "<br>$pass<br>";
+
+    // now connect to the server and put it into the table
+    require("config.php");
+    $connection_string = "mysql:host=$dbhost;dbname=$dbdatabase;charset=utf8mb4";
+    
+    try {
+        $db = new PDO($connection_string, $dbuser, $dbpass);
+        // input the new username and the new hashed pass into the database
+        // note the name of the database is ProjectsTable
+
+
+
+        // THIS WILL PUT THE USER INTO A TABLE OF USERS
+        $stmt = $db->prepare 
+        ("INSERT INTO `ProjectsTable`
+            (username, pwrd) VALUES 
+            (:username, :password)
+        ");
+
+        $username = $_POST['username'];
+
+        $params = array(":username" => $username ,
+                        ":password"=> $pass );
+
+        $stmt->execute($params);
+        echo " <br> User " . $username . " has been added to the system! <br>";
+
+
+      //  echo "<pre>" . var_export($stmt->errorInfo(), true) . "</pre>";
+    
+      // Make an inventory on reg
+
+      $inv = $db->prepare("CREATE TABLE IF NOT EXISTS `TESTING123` 
+      (
+      `ItemName` varchar(30) not null unique,
+      `ItemID` varchar(30) not null unique,
+      `ItemValue` int (200) not null,
+      `ItemAmount` int (200) not null,
+      PRIMARY KEY (`id`)
+      )
+       CHARACTER SET utf8 COLLATE utf8_general_ci"
+       );
+    $inv->execute();
+
+
+        
+    } catch (Exception $e) {
+        echo $e->getMessage();
+        exit();
+    }
+    
+
+
+
+} 
+
+
+
+?>
+
+
 <!DOCTYPE html>
 <!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
 <!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
@@ -49,77 +143,4 @@
     </body>
 </html>
 
-<?php
-ini_set('display_errors',1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
 
-
-// check if all the things by 'name' are filled
-if 
-(
-    isset ($_POST['username']) &&
-    isset ($_POST['password']) &&
-    isset ($_POST['confirm'])
-) {
-    // get the passwords and make sure they are the same
-
-    $pass = $_POST['password'];
-    $conf = $_POST['confirm'];
-
-    if ($pass == $conf) {
-        
-        $msg = "We are registering the user!";
-
-    }else {
-        // echo "Cannot register. Make sure everything is correct!";
-        $msg = "Cannot register the user. Double check your inputs.";
-        exit();
-    }   
-
-    // now hash the password
-    $pass = password_hash ($pass, PASSWORD_BCRYPT);
-   // echo "<br>$pass<br>";
-
-    // now connect to the server and put it into the table
-    require("config.php");
-    $connection_string = "mysql:host=$dbhost;dbname=$dbdatabase;charset=utf8mb4";
-    
-    try {
-        $db = new PDO($connection_string, $dbuser, $dbpass);
-        // input the new username and the new hashed pass into the database
-        // note the name of the database is ProjectsTable
-
-
-        $stmt = $db->prepare 
-        ("INSERT INTO `ProjectsTable`
-            (username, pwrd) VALUES 
-            (:username, :password)
-        ");
-
-        $username = $_POST['username'];
-
-        $params = array(":username" => $username ,
-                        ":password"=> $pass );
-
-        $stmt->execute($params);
-        echo " <br> User " . $username . " has been added to the system! <br>";
-
-
-      //  echo "<pre>" . var_export($stmt->errorInfo(), true) . "</pre>";
-        
-
-        
-    } catch (Exception $e) {
-        echo $e->getMessage();
-        exit();
-    }
-    
-
-
-
-} 
-
-
-
-?>
