@@ -81,17 +81,11 @@ try {
         // if the user does not have this item, give it to them
         $putIn = $db->prepare("
         INSERT INTO `GlobalINV` 
-        (`ItemName`, `ItemID`, `ItemValue`, `ItemAmount`, `ItemRarity`, `ItemOwner`)
+        (`ItemName`, `ItemID`, `ItemValue`, `ItemAmount`, `ItemRarity`, `ItemOwner`, `ClubName`)
          VALUES 
-         ('$ItemName', '$ItemId', '$ItemValue', '$itemAmt', '$tableName', '$owner');
+         ('$ItemName', '$ItemId', '$ItemValue', '$itemAmt', '$tableName', '$owner','');
         ");
         $putIn->execute();
-
-
-  
-
-
-
 
 
 
@@ -100,3 +94,4 @@ try {
     echo $e->getMessage();
     exit();
 }
+?>
