@@ -1,25 +1,16 @@
 <?php
 
-//echo "Hello World <br>";
 session_start();
+include("header.html");
 
 $check = $_SESSION['SignedIn'];
 if ($check == 0) {
     header ("Location: login.php");
 }
 
-include("header.html");
-
-$user = $_SESSION['user'];
-
-echo "Hello there " . $user . "<br>";
-echo "Would you like to join a club? <br>";
-
-echo "<br>";
-echo "Please Fill out the form below";
-
-// get the variable that the user puts in
+// put them into the tables for members and clubs
 $clubname = $_POST['clubname']; // this works
+$user=$_SESSION['user'];
 echo " $clubname";
 
 // now connect to the database, and input the user into that club
@@ -52,7 +43,7 @@ require("config.php");
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <title>Join A Club</title>
+        <title>Create Your Own Club!</title>
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="">
@@ -61,15 +52,17 @@ require("config.php");
         <!--[if lt IE 7]>
             <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="#">upgrade your browser</a> to improve your experience.</p>
         <![endif]-->
-        
 
-        <form name="joinClub" method="POST">
+        <form name="newClub" method="POST">
             <label for="clubname">Club Name: </label>
-            <input type="text" id="clubname" name="clubname" placeholder="Enter Desired Club to Join"/>
+            <input type="text" id="clubname" name="clubname" placeholder="Enter Name of Club"/>
+            <p>
+                Note: YOU WILL BE THE 1st MEMBER to Join the Club
+            </p>
 
-            <input type="submit" value="Join">
+            <input type="submit" value="Create and Join">
         </form>
-
+        
         <script src="" async defer></script>
     </body>
 </html>

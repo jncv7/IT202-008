@@ -3,9 +3,19 @@ session_start();
 //echo "This is to test if we can change a JS value to a PHP value";
 // echo "what you got was";
 //echo "Number: ".$_GET['gotten']."<br>";
+$owner = $_SESSION['user'];
+include("header.html");
+
+
+
 $_SESSION["RecentRoll"] = $_GET['gotten'];
 $x = $_GET['gotten']; // this is the number that represents the rarity of an item
 $tableName;
+$check = $_SESSION['SignedIn'];
+if ($check == 0) {
+    header ("Location: login.php");
+}
+
 //$worth = $tableName;
 /**
  * 1 is common
@@ -44,22 +54,15 @@ try {
     // input the new username and the new hashed pass into the database
     // note the name of the database is dependant on the Item gotten and the player's inventory
 
-    // -------------------------------------------------->
-    // if the user doesnt have an inventory already,
-    //make one now
-
-   // $nameOfInv = $_SESSION['user'] . " INV";
-
-   // $_SESSION['InventoryName'] = $nameOfInv;
-
-   $owner = $_SESSION['user'];
 
 
-    $itemAmt = 1;
+    // ----------------------Look for the Item they just got----------------------------->
+
+    
     // find all the information of a item with the same worth
     $stmt = $db->prepare("
-        SELECT * FROM `ItemDB` WHERE `Rarity` LIKE '$tableName'");
-    $stmt->execute();
+        SELECT * FROM `ItemDB` WHERE `Rarity` = :tablename ");
+    $stmt->execute(array(':tablename' => $tableName ));
 
     // gets the found query and makes an array
     $result = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -70,6 +73,69 @@ try {
     $ItemId = $result['ID']; // item's id
    // echo "$ItemId";
 
+    // -------------------------------------------------->
+    // if the user doesnt have an inventory already,
+    //make one now
+
+    $stmt = $db->prepare("
+        SELECT count(1) as Total FROM `GlobalINV` WHERE `ItemName`=:itemname AND `ItemOwner`=:itemowner "
+    );
+    $stmt->execute(array(':itemname' => $ItemName,':itemowner' => $owner ));
+
+   $result = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    
+
+    if($result){
+        $count = $result['Total'];
+        //echo "$count";
+        if($count >= 1){// if the user has the item already
+ 
+            // get the old amount and the test of the variables for the update
+            $seeOne = $db->prepare("
+            SELECT * FROM `GlobalINV` WHERE `ItemRarity` = :tableName AND `ItemOwner` = :itemowner 
+            ");
+            $seeOne->execute(array(':tableName' => $tableName,':itemowner'=> $owner));
+            $r = $seeOne->fetch(PDO::FETCH_ASSOC);
+
+            // ------------------> how to make queries grabbed into ints?
+            echo var_export($r, true);
+            $itemAmt = (int)($r['ItemAmount']);
+           // echo "This is what the query sees $itemAmt";
+            //echo gettype($itemAmt);
+            $newAMT = 1 + (int)$itemAmt;
+            echo "$newAMT";
+
+            // use that amount value to set the new amount
+            $addOne = $db->prepare("
+            UPDATE `GlobalINV` SET `ItemAmount` = :amount Where `ItemRarity` = :tablename and ItemOwner = :itemO
+            ");
+            $addOne->execute(array(':tablename'=> $tableName, ':amount' => $newAMT, ':itemO'=> $owner));
+
+        }else{
+            
+            // the user does not have the item
+            $itemAmt = 1;
+            
+            $putIn = $db->prepare("
+            INSERT INTO `GlobalINV` 
+            (`ItemName`, `ItemID`, `ItemValue`, `ItemAmount`, `ItemRarity`, `ItemOwner`, `ClubName`)
+             VALUES 
+             ('$ItemName', '$ItemId', '$ItemValue', '$itemAmt', '$tableName', '$owner','');
+            ");
+            $putIn->execute();
+            
+            
+
+        }
+    }
+
+
+   
+
+
+ 
+
     /// ------------------>
 
     // now put that into the GlobalINV with the other needed Parameters
@@ -79,13 +145,13 @@ try {
 
 
         // if the user does not have this item, give it to them
-        $putIn = $db->prepare("
-        INSERT INTO `GlobalINV` 
-        (`ItemName`, `ItemID`, `ItemValue`, `ItemAmount`, `ItemRarity`, `ItemOwner`, `ClubName`)
-         VALUES 
-         ('$ItemName', '$ItemId', '$ItemValue', '$itemAmt', '$tableName', '$owner','');
-        ");
-        $putIn->execute();
+     //   $putIn = $db->prepare("
+     //   INSERT INTO `GlobalINV` 
+     //   (`ItemName`, `ItemID`, `ItemValue`, `ItemAmount`, `ItemRarity`, `ItemOwner`, `ClubName`)
+      //   VALUES 
+     //    ('$ItemName', '$ItemId', '$ItemValue', '$itemAmt', '$tableName', '$owner','');
+     //   ");
+     //   $putIn->execute();
 
 
 

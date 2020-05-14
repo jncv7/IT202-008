@@ -43,6 +43,7 @@
 </html>
 
 <?php
+include("header.html");
 
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
@@ -50,6 +51,7 @@ error_reporting(E_ALL);
 
 // you need a session so that while the user is logged in, the can stay logged in
 session_start();
+
 
 //check if the username and password is here, and make sure that the 
 //pass is NOT empty
@@ -90,7 +92,7 @@ if (
                 // $id = $result['id'];
                 echo "You logged in " . $user . "! <br>";
 
-
+                $_SESSION['SignedIn'] = 1; // 1 is signed in, otherwise its not
                 $_SESSION['user'] = $user;
                 //  echo "Session: <pre>" . var_export($_SESSION, true) . "</pre>";
 
